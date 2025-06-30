@@ -96,24 +96,38 @@
 <body>
   <div class="container">
     <h1>Sentiment Analysis</h1>
-    <form action="/analyse" method="post">
-      <textarea name="text" placeholder="Enter your text here">{{ text or '' }}</textarea>
-      <br />
-      <input type="submit" value="Analyse" />
-    </form>
+   <form action="/analyse" method="post">
+    <label for="text"><strong>Paste Text Review:</strong></label>
+    <textarea name="text" placeholder="Enter your text here...">{{ text or '' }}</textarea>
+    <br />
+    <input type="submit" value="Analyse Text" />
+  </form>
 
-    {% if result %}
+   {% if result %}
     {% set color_class = 'neutral' %}
     {% if polarity > 0 %}
-    {% set color_class = 'positive' %}
+      {% set color_class = 'positive' %}
     {% elif polarity < 0 %}
-    {% set color_class = 'negative' %}
+      {% set color_class = 'negative' %}
     {% endif %}
-      
-      <div class="result {{ color_class }}">Sentiment: {{ result }}</div>
-      <div class="result">Score: {{ polarity }}</div>
-      <div class="result">{{ response }}</div>
-    {% endif %}
-  </div>
+    <div class="result {{ color_class }}">Sentiment: {{ result }}</div>
+    <div class="result">Score: {{ polarity }}</div>
+    <div class="result">{{ response }}</div>
+  {% endif %}
+       <hr style="margin: 30px 0;">
+       <h2>Upload Reviews File</h2>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <label for="file"><strong>Select .txt or .csv file:</strong></label><br>
+    <input type="file" name="file" accept=".txt,.csv" required>
+    <br /><br />
+    <input type="submit" value="Upload & Analyse File" />
+  </form>
+      {% if bulk_result %}
+    <div class="result">📄 <strong>Total Reviews:</strong> {{ total }}</div>
+    <div class="result positive">😊 Positive: {{ positive }}</div>
+    <div class="result negative">😠 Negative: {{ negative }}</div>
+    <div class="result neutral">😐 Neutral: {{ neutral }}</div>
+  {% endif %}
+</div>
 </body>
 </html>
